@@ -1,0 +1,48 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-merge-conflict
+
+      - id: check-yaml
+
+      - id: check-json
+        exclude: ^(client/tsconfig\.json|client/tsconfig\.app\.json|client/tsconfig\.spec\.json|client/\.vscode/extensions\.json|client/\.vscode/launch\.json|client/\.vscode/mcp\.json|client/\.vscode/tasks\.json)$
+
+      - id: check-added-large-files
+        args: ["--maxkb=512"]
+
+      - id: end-of-file-fixer
+
+      - id: trailing-whitespace
+
+  - repo: https://github.com/PyCQA/flake8
+    rev: 7.1.1
+    hooks:
+      - id: flake8
+        args: ["--max-line-length=100"]
+        exclude: ^api/core/migrations/
+
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.10
+    hooks:
+      - id: bandit
+        args: ["-r", "api", "-q", "-x", "api/.venv,api/core/migrations"]
+        pass_filenames: false
+
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args: ["--baseline", ".secrets.baseline"]
+        files: ^(README\.md|\.gitignore|\.pre-commit-config\.yaml|ai_governance/|api/(core|ecoroute_api)/|api/(manage\.py|gunicorn_conf\.py|requirements\.txt|\.env\.example|\.flake8)$|client/src/|client/(angular\.json|package\.json|tsconfig\.json|tsconfig\.app\.json|tsconfig\.spec\.json|\.eslintrc\.json|\.eslintignore)$|docs/|infra/|scripts/)
+        exclude: ^(api/\.venv/|client/node_modules/|client/dist/|client/\.angular/|\.pre-commit-cache/)
+
+  - repo: local
+    hooks:
+      - id: gitleaks-mock
+        name: gitleaks-mock (regex scan for obvious secret patterns)
+        entry: py scripts/mock_gitleaks.py
+        language: system
+        stages: [pre-commit]
+        pass_filenames: false

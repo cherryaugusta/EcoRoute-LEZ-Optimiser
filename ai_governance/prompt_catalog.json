@@ -1,0 +1,47 @@
+{
+  "catalog_version": "1.0.0",
+  "last_updated": "2026-03-01",
+  "classification": "INTERNAL_PORTFOLIO_DEMO",
+  "prompts": [
+    {
+      "prompt_id": "audit_mode_compliance_explanation_v1",
+      "version": "1.0.0",
+      "owner": "engineering@ecoroute-demo.local",
+      "purpose": "Generate a compliance explanation for a chosen route, tied to explicit rule outputs (zones avoided, constraints applied).",
+      "allowed_models": ["no-model-required"],
+      "data_classification": {
+        "inputs": "NON_PII_OPERATIONAL",
+        "outputs": "NON_PII_OPERATIONAL"
+      },
+      "allowed_inputs": ["route_edges", "restricted_zone_hits", "constraint_decisions", "fleet_type", "goal"],
+      "disallowed_inputs": [
+        "names",
+        "phone_numbers",
+        "email_addresses",
+        "vehicle_registration_marks",
+        "exact_home_addresses",
+        "payment_cards",
+        "api_keys",
+        "access_tokens"
+      ],
+      "human_in_the_loop": {
+        "required": true,
+        "review_roles": ["compliance", "operations"],
+        "approval_required_for": ["customer-facing explanations", "regulatory reporting", "billing disputes"]
+      },
+      "hallucination_mitigation": {
+        "strategy": [
+          "rule-grounded template first",
+          "model output constrained to provided facts only",
+          "reject if output introduces unseen zones or numeric values"
+        ],
+        "rejection_triggers": [
+          "mentions zones not in restricted_zone_hits or avoided list",
+          "adds new numeric values not present in inputs",
+          "adds policy claims without a rule id"
+        ]
+      },
+      "example_prompt_text": "Using only the provided routing engine facts, explain why the route complies with restricted-zone constraints. Do not introduce new zones, costs, or emissions values. If facts are insufficient, say so and request missing fields."
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "evaluation_id": "eval_2026-03-01_audit_mode_v1",
+  "prompt_id": "audit_mode_compliance_explanation_v1",
+  "prompt_version": "1.0.0",
+  "fixtures": [
+    {
+      "fixture_id": "fx_001",
+      "inputs": {
+        "restricted_zone_hits": [],
+        "constraint_decisions": [
+          { "rule_id": "ULEZ_AVOID_01", "decision": "avoid", "evidence": "no polygon intersections" }
+        ],
+        "fleet_type": "ev",
+        "goal": "greenest"
+      },
+      "expected_properties": {
+        "must_not_contain": ["£", "pence", "AKIA", "BEGIN PRIVATE KEY"],
+        "must_contain": ["complies", "avoid", "ULEZ_AVOID_01"],
+        "must_state_limitations_if_missing": true
+      },
+      "scoring": {
+        "method": "deterministic_checks",
+        "pass_conditions": [
+          "no forbidden substrings present",
+          "references only rule_id values provided",
+          "no new numeric values introduced"
+        ]
+      }
+    }
+  ],
+  "results": {
+    "run_mode": "no-model-required",
+    "timestamp": "2026-03-01T00:00:00Z",
+    "summary": { "passed": 1, "failed": 0 }
+  }
+}
