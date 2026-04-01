@@ -16,6 +16,18 @@ The following filenames are intentionally **not** used:
 - `app.component.ts`
 - `api.service.ts`
 
+## Why This Project Matters
+
+This repository is designed to demonstrate engineering patterns that are highly relevant to modern backend, frontend, and platform-oriented delivery:
+
+- secure-by-default Django API design
+- OpenAPI-first contract visibility
+- strict Angular and TypeScript alignment with backend response shapes
+- deterministic, inspectable route-audit behavior
+- Dockerized local reproducibility
+- governance-aware repository design
+- enterprise-style quality controls such as linting, secret scanning, dependency scanning, and structural verification
+
 ## What It Does
 
 - Computes deterministic audit responses for a route between an origin and destination
@@ -105,6 +117,7 @@ EcoRoute-LEZ-Optimiser/
 ├─ .gitignore
 ├─ .pre-commit-config.yaml
 ├─ README.md
+├─ LICENSE
 ├─ .secrets.baseline
 ├─ screenshots/
 │  ├─ angular-home-health-compute.png
@@ -201,6 +214,60 @@ EcoRoute-LEZ-Optimiser/
 ### Pre-commit Passing
 
 ![Pre-commit passing](screenshots/pre-commit-passing.png)
+
+## Quick Start
+
+Use either the local development workflow or the Docker workflow.
+
+### Local backend
+
+```powershell
+cd .\api
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+py -m pip install --upgrade pip setuptools wheel
+py -m pip install -r .\requirements.txt
+py manage.py makemigrations
+py manage.py migrate
+py manage.py runserver 0.0.0.0:8000
+```
+
+Backend endpoints:
+
+* `http://localhost:8000/api/health/`
+* `http://localhost:8000/api/schema/`
+* `http://localhost:8000/api/docs/`
+
+### Local frontend
+
+```powershell
+cd .\client
+npm install
+ng serve --open
+```
+
+Frontend:
+
+* `http://localhost:4200`
+
+### Docker workflow
+
+```powershell
+cd .\infra
+docker compose up --build
+```
+
+To stop containers:
+
+```powershell
+docker compose down
+```
+
+If a terminal command hangs or needs to be stopped, press:
+
+```text
+CTRL + C
+```
 
 ## API Endpoints
 
@@ -519,12 +586,6 @@ A project state is considered complete only when all of the following are true:
 * Docker migrations run successfully
 * Required screenshots exist
 * README screenshot paths match actual file names
-* README and screenshots are staged before commit
-* A Git commit exists
-* A GitHub repository exists
-* `main` and `develop` are pushed
-* GitHub branch protection is set
-* GitHub repository About sidebar is configured
 
 ## Repository Layout Summary
 
@@ -548,6 +609,30 @@ This repository is designed to showcase:
 * Local reproducibility with Docker
 * Governance-aware AI documentation patterns
 
+## Production-Grade Notes
+
+This repository is production-oriented in engineering style, but intentionally constrained in functional scope for educational and portfolio purposes.
+
+Production-grade characteristics demonstrated here include:
+
+* explicit API surface and schema visibility
+* typed frontend/backend integration
+* security scanning and secret prevention controls
+* deterministic backend behavior for explainability
+* Dockerized local reproducibility
+* structural verification and governance documentation
+
+Non-production constraints include:
+
+* educational positioning
+* simplified routing model
+* no claim of real-world transport compliance authority
+* no claim of live regulatory data integration
+
 ## License
 
-No license is specified in this repository unless a license file is added.
+This project is licensed under the MIT License.
+
+Copyright (c) 2026 Cherry Augusta
+
+See the [LICENSE](./LICENSE) file for full details.
